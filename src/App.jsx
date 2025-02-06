@@ -1,7 +1,7 @@
 import './App.css';
 import ContactEditor from './components/ContactEditor';
 import ContactList from './components/ContactList';
-import { useReducer, useRef } from 'react';
+import { useReducer, useRef, useCallback } from 'react';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -20,8 +20,7 @@ function App() {
     const idRef = useRef(0);
 
     /* 새로운 연락처 추가 */
-    const onAddContact = (name, contact) => {
-        console.log('✅ onAddContact 호출됨:', name, contact);
+    const onAddContact = useCallback((name, contact) => {
         dispatch({
             type: 'ADD_CONTACT',
             data: {
@@ -30,12 +29,12 @@ function App() {
                 contact,
             },
         });
-    };
+    }, []);
 
     /* 기존 연락처 삭제 */
-    const onRemoveContact = (targetId) => {
+    const onRemoveContact = useCallback((targetId) => {
         dispatch({ type: 'REMOVE_CONTACT', targetId });
-    };
+    }, []);
 
     return (
         <div className="App">
